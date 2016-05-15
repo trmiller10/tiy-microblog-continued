@@ -14,10 +14,12 @@ public class Main {
 
     static HashMap<String, User> users = new HashMap<>();
 
+    static int sequence = 0;
+
     public static void main(String[] args) {
 
         addTestUsers();
-        addTestMessages();
+        //addTestMessages();
 
         Spark.init();
 
@@ -166,9 +168,9 @@ public class Main {
 
                     // TODO: get the submitted message text from the request's queryParams
                     String submittedMessage = request.queryParams("message");
-
+                    sequence = sequence + 1;
                     // TODO: Create a new message for submitted message text
-                    Message newMessage = new Message(submittedMessage);
+                    Message newMessage = new Message(submittedMessage, sequence);
 
                     // TODO: add the new message to the user's array of messages
                     //HSN: User class already has its own Array List for messages, use that one here instead
@@ -185,6 +187,18 @@ public class Main {
                     return "";
                 }
         );
+        Spark.get(
+                "/edit-message",
+                (request, response) -> {
+                    //todo: query id
+                    //todo: convert id to integer
+                    //todo: get user
+                    //todo: using id, find message id in user's arraylist
+                    //todo:
+
+                }
+
+        )
 
 
 
@@ -198,7 +212,7 @@ public class Main {
         users.put("Charlie", new User("Charlie", "password"));
         users.put("Doug", new User("Doug", "password"));
     }
-
+/*
     static void addTestMessages() {
         messages.add(new Message(0, -1, "Alice", "Hello world!"));
         messages.add(new Message(1, -1, "Bob", "This is another thread!"));
@@ -206,4 +220,5 @@ public class Main {
         messages.add(new Message(3, 2, "Alice", "Thanks"));
         messages.add(new Message(4, -1, "Doug", "Bob is an idiot."));
     }
+    */
 }

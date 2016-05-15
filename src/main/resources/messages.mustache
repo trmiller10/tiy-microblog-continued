@@ -23,6 +23,18 @@
             <li>{{messageText}}</li>
         {{/userMessage}}
     </ol>
+    <h2>Edit or delete messages</h2>
+
+    <form action="/edit-message" method="post">
+        <p>
+            <input type="text" name="messageText" value="{{message.messageText}}" placeholder="Edit Message">
+        </p>
+        <p>
+            <input type="hidden" name="id" value="{{message.messageId}}">
+        </p>
+        <button type="">Save</button>
+    </form>
+
     <br>
     <form action="/logout" method="post">
         <button type="Logout">Logout</button>

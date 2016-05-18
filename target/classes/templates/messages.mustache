@@ -2,7 +2,7 @@
 <body>
 
 <form action="/create-message" method="post">
-    <input type="text" placeholder="Write a message" name="message"/>
+    <input type="text" name="message" placeholder="Write a message"/>
     <button type="submit">Submit</button>
 </form>
 <br>
@@ -20,22 +20,27 @@
 
     <ol>
         {{#userMessage}}
-            <li>{{messageText}}</li>
+            <li>{{messageText}}{{messageId}}</li>
         {{/userMessage}}
     </ol>
+
     <h2>Edit or delete messages</h2>
+
+    <form action="/delete-message" method="post">
+        <p>
+            <input type="text" name="deleteId" placeholder="Delete Message #">
+            <button type="delete">Delete</button>
+        </p>
+
+    </form>
 
     <form action="/edit-message" method="post">
         <p>
-            <input type="text" name="messageText" value="{{message.messageText}}" placeholder="Edit Message">
+            <input type="text" name="id" placeholder="Edit Message #"> <input type="text" name="editText" placeholder="Edit Message">
+            <button type="Edit">Edit</button>
         </p>
-        <p>
-            <input type="hidden" name="id" value="{{message.messageId}}">
-        </p>
-        <button type="">Save</button>
-    </form>
 
-    <br>
+    </form>
     <form action="/logout" method="post">
         <button type="Logout">Logout</button>
     </form>

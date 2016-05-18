@@ -1,4 +1,3 @@
-import com.sun.org.apache.xpath.internal.operations.Mod;
 import spark.ModelAndView;
 import spark.Session;
 import spark.*;
@@ -8,7 +7,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static spark.Spark.halt;
-import static spark.route.HttpMethod.get;
 
 public class Main {
 
@@ -47,17 +45,17 @@ public class Main {
                         hashMap.put("user", user);
 
 
-
                         // TODO: return a ModelAndView for the messages template
                         return new ModelAndView(hashMap, "messages.mustache");
 
 
                         //   return new ModelAndView(hashMap, "index.mustache");
-                    }
 
-                    // TODO: IF NOT:
-                    // TODO: return a ModelAndView for the index template
-                    else {
+
+                        // TODO: IF NOT:
+                        // TODO: return a ModelAndView for the index template
+                    } else {
+
                         return new ModelAndView(hashMap, "index.mustache");
                     }
                 },
@@ -159,6 +157,7 @@ public class Main {
                 }
         );
 
+
         Spark.post(
                 "/create-message",
                 (request, response) -> {
@@ -187,31 +186,104 @@ public class Main {
                     return "";
                 }
         );
-        Spark.get(
+
+
+        Spark.post(
+                "/delete-message",
+                (request, response) -> {
+
+                    //get the current user
+                    User user = request.session().attribute("user");
+
+                    //create an integer variable to hold the converted number typed into the delete message # field
+                    int deleteId = Integer.valueOf(request.queryParams("deleteId"));
+
+                    //retrieve the user's message arraylist
+                    ArrayList userArray = user.getUserMessage();
+
+                    Message messageToBeDeleted = getMessage(userArray, deleteId);
+
+                    //retrieve the message in the array list by matching its ID to the deleteId
+                    userArray.remove(messageToBeDeleted);
+
+
+
+                    response.redirect("/");
+
+                    halt();
+
+                    return "";
+                }
+        );
+
+
+
+        //messages.mustache has a "post" method that calls for the "/edit-message" endpoint
+
+        Spark.post(
                 "/edit-message",
                 (request, response) -> {
-                    //todo: query id
-                    //todo: convert id to integer
+
                     //todo: get user
-                    //todo: using id, find message id in user's arraylist
+                    User user = request.session().attribute("user");
+
+                    //todo: get edit ID
+                    int editId = Integer.valueOf(request.queryParams("id"));
+
+                    //todo: query edit text
+                    String editText = request.queryParams("editText");
+
+                    //create a new message to replace the one being edited
+
+                    ArrayList userArray = user.getUserMessage();
+
+                    Message originalMessage = getMessage(userArray, editId);
+
+                    //   update the item's name
+                    originalMessage.setMessageText(editText);
+
+                    //   update the item's ID
+                    originalMessage.setMessageId(editId);
+
+                    response.redirect("/");
+
+                    halt();
+
                     //todo:
-
+                    return null;
                 }
-
-        )
-
-
+        );
 
     }
 
+    static Message getMessage(ArrayList<Message> userMessages, int id) {
+        //   loop over the list of grocery items
+        for (Message message : userMessages) {
 
-    // this method adds a set of test users to log in with.
+            //groceryList.forEach(GroceryItem -> GroceryItem.id == new GroceryItem());
+            //   check if this item's id match the id of the item being deleted.
+            if (id == message.messageId) {
+                //   if so, return this item
+                return message;
+            }
+            // it's possible that the list of grocery items is empty or the id provided isn't actually in the list.
+            // If that happens we won't reach the return statement in the loop above. Because of this we must add
+            // a default return statement that returns null.
+        }
+        return null;
+    }
+
+
+
+        // this method adds a set of test users to log in with.
     static void addTestUsers() {
         users.put("Alice", new User("Alice", "cats"));
         users.put("Bob", new User("Bob", "bob"));
         users.put("Charlie", new User("Charlie", "password"));
         users.put("Doug", new User("Doug", "password"));
     }
+
+
 /*
     static void addTestMessages() {
         messages.add(new Message(0, -1, "Alice", "Hello world!"));

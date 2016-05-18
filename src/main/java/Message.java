@@ -4,7 +4,7 @@ public class Message {
     private String messageText;
 
     //gives the message an ID
-    public int messageId = 1;
+    public int messageId;
 
     // TODO: create a constructor for Message that accepts one argument, the text of the message
     public Message(String messageText, int messageId) {
@@ -26,10 +26,12 @@ public class Message {
     }
 
     public int getMessageId() {
+
         return messageId;
     }
 
     public void setMessageId(int messageId) {
+
         this.messageId = messageId;
     }
 }

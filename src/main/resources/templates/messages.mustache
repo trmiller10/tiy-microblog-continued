@@ -1,0 +1,52 @@
+<html>
+<body>
+
+<form action="/create-message" method="post">
+    <input type="text" name="message" placeholder="Write a message"/>
+    <button type="submit">Submit</button>
+</form>
+<br>
+
+{{^user}}
+    <p>How did you get in here!</p>
+{{/user}}
+
+{{#user}}
+    <p>Messages by {{name}}!</p>
+
+    {{^userMessage}}
+        <p>NO MESSAGES</p>
+    {{/userMessage}}
+
+    <ol>
+        {{#userMessage}}
+            <li>{{messageText}}{{messageId}}</li>
+        {{/userMessage}}
+    </ol>
+
+    <h2>Edit or delete messages</h2>
+
+    <form action="/delete-message" method="post">
+        <p>
+            <input type="text" name="deleteId" placeholder="Delete Message #">
+            <button type="delete">Delete</button>
+        </p>
+
+    </form>
+
+    <form action="/edit-message" method="post">
+        <p>
+            <input type="text" name="id" placeholder="Edit Message #"> <input type="text" name="editText" placeholder="Edit Message">
+            <button type="Edit">Edit</button>
+        </p>
+
+    </form>
+    <form action="/logout" method="post">
+        <button type="Logout">Logout</button>
+    </form>
+
+{{/user}}
+
+
+</body>
+</html>
